@@ -1,0 +1,37 @@
+package com.example.tradingsystem.controller;
+
+import com.example.tradingsystem.dto.OrderDto;
+import com.example.tradingsystem.service.IOrderService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(path = "/api/orders", produces = {MediaType.APPLICATION_JSON_VALUE})
+@AllArgsConstructor
+public class OrderController {
+    private IOrderService iOrderService;
+
+    @GetMapping()
+    public ResponseEntity<List<OrderDto>> fetchAllOrders() {
+        List<OrderDto> allOrdersList = iOrderService.fetchAllOrders();
+        return ResponseEntity.status(HttpStatus.OK).body(allOrdersList);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDto> fetchOrderByOrderId(@PathVariable("orderId") Long orderId) {
+        OrderDto order = iOrderService.fetchOrderByOrderId(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(order);
+    }
+
+    @PostMapping()
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
+        OrderDto createdOrder = iOrderService.createOrder(orderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdOrder);
+    }
+}
