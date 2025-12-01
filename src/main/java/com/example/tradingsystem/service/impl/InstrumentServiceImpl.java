@@ -1,29 +1,33 @@
 package com.example.tradingsystem.service.impl;
 
-import com.example.tradingsystem.dto.InstrumentDto;
-import com.example.tradingsystem.dto.InstrumentPriceDto;
+import com.example.tradingsystem.client.GpwClient;
+import com.example.tradingsystem.dto.*;
 import com.example.tradingsystem.service.IInstrumentService;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class InstrumentServiceImpl implements IInstrumentService {
+    private final GpwClient gpwClient;
+
+    public InstrumentServiceImpl(GpwClient gpwClient) {
+        this.gpwClient = gpwClient;
+    }
+
     @Override
     public List<InstrumentDto> fetchAllInstruments() {
-        return List.of();
+        return gpwClient.fetchAllInstrumentsFromGpw();
+    }
+
+    @Override
+    public List<InstrumentPriceDto> fetchAllInstrumentsPrices() {
+        return gpwClient.fetchAllInstrumentsPrices();
     }
 
     @Override
     public InstrumentDto fetchInstrumentByIsin(String isin) {
         return null;
-    }
-
-    @Override
-    public List<InstrumentPriceDto> fetchAllInstrumentsPrices() {
-        return List.of();
     }
 
     @Override

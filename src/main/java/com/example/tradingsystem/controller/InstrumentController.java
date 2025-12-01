@@ -24,6 +24,12 @@ public class InstrumentController {
         return ResponseEntity.status(HttpStatus.OK).body(allInstrumentsList);
     }
 
+    @GetMapping("/prices/current")
+    public ResponseEntity<List<InstrumentPriceDto>> fetchAllInstrumentsPrices() {
+        List<InstrumentPriceDto> allInstrumentsPrices = iInstrumentService.fetchAllInstrumentsPrices();
+        return ResponseEntity.status(HttpStatus.OK).body(allInstrumentsPrices);
+    }
+
     @GetMapping("/{isin}") // TODO: Check if necessary
     public ResponseEntity<InstrumentDto> fetchInstrumentByIsin(@PathVariable("isin") String isin) {
         InstrumentDto instrument = iInstrumentService.fetchInstrumentByIsin(isin);
@@ -36,9 +42,4 @@ public class InstrumentController {
         return ResponseEntity.status(HttpStatus.OK).body(instrumentPrice);
     }
 
-    @GetMapping("/prices/current")
-    public ResponseEntity<List<InstrumentPriceDto>> fetchAllInstrumentsPrices() {
-        List<InstrumentPriceDto> allInstrumentsPrices = iInstrumentService.fetchAllInstrumentsPrices();
-        return ResponseEntity.status(HttpStatus.OK).body(allInstrumentsPrices);
-    }
 }

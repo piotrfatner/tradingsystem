@@ -1,6 +1,5 @@
 package com.example.tradingsystem.dto;
 
-import com.example.tradingsystem.enumes.OrderStatus;
 import com.example.tradingsystem.enumes.OrderType;
 import com.example.tradingsystem.enumes.TransactionSide;
 import lombok.Data;
@@ -9,9 +8,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Data
-public class OrderDto {
-    private Long orderId;
-    private Long externalOrderId;
+public class OrderRequestDto {
     private Long accountId;
     private String isin;
     private TransactionSide side;
@@ -20,10 +17,4 @@ public class OrderDto {
     private Instant expiresAt;
     private OrderType orderType;
     private BigDecimal limitPrice;
-    private OrderStatus status;
-    private Instant registrationTime;
-    // After execution:
-    private Instant executedTime;
-    private BigDecimal executionPrice;
-    //private BigDecimal commission;
 }
