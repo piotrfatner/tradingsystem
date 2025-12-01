@@ -28,11 +28,17 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  config:
+    import:
+      - "application_dev.yml"
+  profiles:
+    active:
+      "dev"
 
 
 gpw:
-  base-url: "http://localhost:9000"
+  base-url: "<Place Production Gpw Address>"
 
 account:
-  username: "user"
-  accountId: 123
+  username: "<Place Production Account Username>"
+  accountId: 0

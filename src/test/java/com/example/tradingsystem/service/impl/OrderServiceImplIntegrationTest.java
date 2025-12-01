@@ -96,6 +96,24 @@ public class OrderServiceImplIntegrationTest {
         inputOrderDto.setTradeCurrency("PLN");
 
         // Mock external service response
+        stubFor(get(urlEqualTo("/gpw/tickers"))
+                .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                        .withBody("""
+                            {
+                                "results": [
+                                    {
+                                      "name": "ING Bank Śląski",
+                                      "ticker": "INGBSK",
+                                      "isin": "PLBSK0000017",
+                                      "tradeCurrency": "PLN",
+                                      "mic": "XWAR"
+                                    }
+                                ]
+                            }
+                        """)));
+
         stubFor(post(urlEqualTo("/gpw/orders"))
                 .willReturn(aResponse()
                         .withStatus(200)
@@ -128,4 +146,6 @@ public class OrderServiceImplIntegrationTest {
         assertEquals("PLBSK0000017", savedOrderDto.getIsin());
         assertNotNull(savedOrderDto.getOrderId());
     }
+
+    //TODO: Could add tests with validatio like LimitPriceForLimitOrderNotFoundException and expires at and ISIN exists in GPW instruments
 }

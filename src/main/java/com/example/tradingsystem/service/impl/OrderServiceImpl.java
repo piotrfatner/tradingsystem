@@ -15,6 +15,7 @@ import com.example.tradingsystem.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -71,6 +72,10 @@ public class OrderServiceImpl implements IOrderService {
         // Validate limit price for Limit order
         if (orderDto.getOrderType() == OrderType.LMT && orderDto.getLimitPrice() == null) {
             throw new LimitPriceForLimitOrderNotFoundException(orderDto.getIsin());
+        }
+
+        if (orderDto.getExpiresAt() != null && orderDto.getExpiresAt().isBefore(Instant.now())) {
+            throw new IllegalArgumentException("Order expiration date cannot be placed in the past");
         }
 
         InstrumentDto instrument = instrumentService.fetchInstrumentByIsin(orderDto.getIsin());

@@ -30,7 +30,7 @@ public class InstrumentController {
         return ResponseEntity.status(HttpStatus.OK).body(allInstrumentsPrices);
     }
 
-    @GetMapping("/{isin}") // TODO: Check if necessary
+    @GetMapping("/{isin}")
     public ResponseEntity<InstrumentDto> fetchInstrumentByIsin(@PathVariable("isin") String isin) {
         InstrumentDto instrument = iInstrumentService.fetchInstrumentByIsin(isin);
         return ResponseEntity.status(HttpStatus.OK).body(instrument);

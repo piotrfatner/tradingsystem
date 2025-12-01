@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class InstrumentServiceImpl implements IInstrumentService {
+public class InstrumentServiceImpl implements IInstrumentService { //TODO: Could add caching
     private final GpwClient gpwClient;
 
     public InstrumentServiceImpl(GpwClient gpwClient) {

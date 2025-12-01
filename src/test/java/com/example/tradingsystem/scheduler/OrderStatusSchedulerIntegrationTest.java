@@ -11,7 +11,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,6 +26,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.apache.kafka.clients.consumer.Consumer;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Map;
 
@@ -78,6 +78,7 @@ public class OrderStatusSchedulerIntegrationTest {
         tradeOrder.setQuantity(10);
         tradeOrder.setOrderType(OrderType.LMT);
         tradeOrder.setStatus(OrderStatus.SUBMITTED);
+        tradeOrder.setMic("XWAR");
         tradeOrder = orderRepository.save(tradeOrder);
 
         stubFor(get(urlEqualTo("/gpw/order/12345")).willReturn(aResponse().withStatus(200).withHeader(
@@ -104,6 +105,45 @@ public class OrderStatusSchedulerIntegrationTest {
         OrderEvent event = records.iterator().next().value();
         assertEquals(tradeOrder.getOrderId(), event.orderId());
         assertEquals(OrderStatus.FILLED, event.status());
+    }
+
+    @Test
+    void updateOrderStatuses_ShouldUpdateStatus_WhenOrderIsExpired() throws InterruptedException {
+        // given
+        TradeOrder tradeOrder = new TradeOrder();
+        tradeOrder.setExternalOrderId(98765L);
+        tradeOrder.setAccountId(1L);
+        tradeOrder.setIsin("PLBSK0000017");
+        tradeOrder.setSide(TransactionSide.SELL);
+        tradeOrder.setQuantity(5);
+        tradeOrder.setOrderType(OrderType.LMT);
+        tradeOrder.setStatus(OrderStatus.SUBMITTED);
+        tradeOrder.setMic("XWAR");
+        tradeOrder.setExpiresAt(Instant.now().plusSeconds(1000));
+        tradeOrder = orderRepository.save(tradeOrder);
+
+        stubFor(get(urlEqualTo("/gpw/order/98765")).willReturn(aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
+                .withBody("""
+                        {
+                            "orderId": 98765,
+                            "status": "EXPIRED",
+                            "executionPrice": null,
+                            "executedTime": null
+                        }
+                    """)));
+
+        // when
+        orderStatusScheduler.checkSubmittedOrders();
+
+        // then
+        TradeOrder updatedOrder = orderRepository.findById(tradeOrder.getOrderId()).orElseThrow();
+        assertEquals(OrderStatus.EXPIRED, updatedOrder.getStatus());
+
+        // Verify NO Kafka event is published for EXPIRED status
+        ConsumerRecords<String, OrderEvent> records = KafkaTestUtils.getRecords(consumer, java.time.Duration.ofMillis(500));
+        assertEquals(0, records.count(), "Should not publish event for expired order");
     }
 
 }

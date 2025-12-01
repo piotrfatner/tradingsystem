@@ -1,0 +1,11 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+gpw:
+  base-url: "http://localhost:9000"
+
+account:
+  username: "user"
+  accountId: 123
