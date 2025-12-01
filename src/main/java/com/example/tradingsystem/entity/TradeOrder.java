@@ -64,4 +64,10 @@ public class TradeOrder extends BaseEntity{
 
     @Column(name = "execution_price")
     private BigDecimal executionPrice;
+
+    @Column(name = "mic")
+    private String mic;
+
+    @Column(name = "commission")
+    private BigDecimal commission;
 }

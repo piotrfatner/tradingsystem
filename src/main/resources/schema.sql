@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS `trade_orders` (
     registration_time TIMESTAMP WITH TIME ZONE,
     executed_time TIMESTAMP WITH TIME ZONE,
     execution_price NUMERIC(19, 4),
+    mic VARCHAR(255) NOT NULL,
+    commission NUMERIC(19, 4),
 
     created_by VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE,

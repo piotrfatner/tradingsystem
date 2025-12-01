@@ -1,6 +1,7 @@
 package com.example.tradingsystem.client;
 
 import com.example.tradingsystem.dto.*;
+import com.example.tradingsystem.enumes.OrderStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class GpwClient {
         return orderResponseDto;*/
     }
 
-    public OrderResponseDto fetchOrderDetailsByOrderId(Long orderId) { // TODO: Change OrderResponseDto to another NEW OrderResponseDetailsDto
-        return null;
+    public OrderResponseDetailsDto fetchOrderDetailsByOrderId(Long orderId) {
+        return restClient.get().uri("/gpw/order/"+orderId).retrieve().body(OrderResponseDetailsDto.class);
     }
 }

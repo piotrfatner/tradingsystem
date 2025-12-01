@@ -49,6 +49,7 @@ public class OrdersMapper {
         orderDto.setRegistrationTime(tradeOrder.getRegistrationTime());
         orderDto.setExecutedTime(tradeOrder.getExecutedTime());
         orderDto.setExecutionPrice(tradeOrder.getExecutionPrice());
+        orderDto.setCommission(tradeOrder.getCommission());
         return orderDto;
     }
 }

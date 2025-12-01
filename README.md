@@ -34,5 +34,5 @@ Celem jest dostarczenie modułu systemu tradingowego, który będzie stanowił s
 1. mvn clean install
 2. mvn spring-boot:run
    lub  
-   docker build -t trading-app .  
-   docker run -p 8090:8090 trading-app
+   mvn spring-boot:build-image
+   docker run -p 8090:8090 pioneer9500/tradingsystem:t1

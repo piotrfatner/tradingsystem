@@ -27,7 +27,10 @@ public class InstrumentServiceImpl implements IInstrumentService {
 
     @Override
     public InstrumentDto fetchInstrumentByIsin(String isin) {
-        return null;
+        return fetchAllInstruments().stream()
+                .filter(i -> i.getIsin().equals(isin))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
