@@ -107,7 +107,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <image>pioneer9500/${project.artifactId}:t1</image>
+                    <image>
+                        <name>
+                            pioneer9500/${project.artifactId}:t1
+                        </name>
+                    </image>
                 </configuration>
             </plugin>
             <plugin>

@@ -81,7 +81,7 @@ Celem jest dostarczenie modułu systemu tradingowego, który będzie stanowił s
 2. mvn spring-boot:run
    lub  
    mvn spring-boot:build-image
-   docker run -p 8090:8090 tradingsystem:t1
+   docker run -p 8090:8090 pioneer9500/tradingsystem:t1
 3. WireMock service z preparowanymi danymi: https://github.com/piotrfatner/wiremock_dev.git
 4. docker run -p 9092:9092 apache/kafka:latest
 
