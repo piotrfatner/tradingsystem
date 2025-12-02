@@ -42,3 +42,9 @@ gpw:
 account:
   username: "<Place Production Account Username>"
   accountId: 0
+
+restclient:
+  connectTimeoutMs: 5000
+  readTimeoutMs: 10000
+  maxConnTotal: 100
+  maxConnPerRoute: 20

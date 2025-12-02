@@ -3,12 +3,13 @@ package com.example.tradingsystem.service.impl;
 import com.example.tradingsystem.client.GpwClient;
 import com.example.tradingsystem.dto.*;
 import com.example.tradingsystem.service.IInstrumentService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class InstrumentServiceImpl implements IInstrumentService { //TODO: Could add caching
+public class InstrumentServiceImpl implements IInstrumentService {
     private final GpwClient gpwClient;
 
     public InstrumentServiceImpl(GpwClient gpwClient) {
@@ -16,11 +17,13 @@ public class InstrumentServiceImpl implements IInstrumentService { //TODO: Could
     }
 
     @Override
+    @Cacheable("instruments")
     public List<InstrumentDto> fetchAllInstruments() {
         return gpwClient.fetchAllInstrumentsFromGpw();
     }
 
     @Override
+    @Cacheable("instrumentsPrices")
     public List<InstrumentPriceDto> fetchAllInstrumentsPrices() {
         return gpwClient.fetchAllInstrumentsPrices();
     }

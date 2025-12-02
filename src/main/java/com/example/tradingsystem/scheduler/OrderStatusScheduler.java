@@ -32,6 +32,7 @@ public class OrderStatusScheduler {
         this.orderEventPublisher = orderEventPublisher;
     }
 
+    // TODO: For many instances of this application there should be ShedLock used
     @Scheduled(fixedDelay = 10_000)
     public void checkSubmittedOrders() {
         List<TradeOrder> submittedOrders = orderRepository.findByStatus(OrderStatus.SUBMITTED);
